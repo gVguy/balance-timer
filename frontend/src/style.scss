@@ -1,0 +1,80 @@
+:root {
+    --bg-rgb: 13, 13, 13;
+    --fg-rgb: 255, 255, 255;
+    --accent-rgb: 166, 207, 255;
+    --bg-color: rgb(var(--bg-rgb));
+    --fg-color: rgb(var(--fg-rgb));
+    --accent-color: rgb(var(--accent-rgb));
+}
+
+body {
+    background: var(--bg-color);
+    color: var(--fg-color);
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+    overflow: clip;
+}
+
+#app {
+    height: 100vh;
+    width: 100vw;
+    overflow: clip;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    --wails-draggable: drag;
+    user-select: none;
+}
+
+input {
+    --wails-draggable: no-drag;
+    background: rgba(var(--fg-rgb), 0.2);
+    border: 1px solid var(--fg-color);
+    border-radius: 6px;
+    font-size: inherit;
+    font-family: inherit;
+    color: var(--fg-color);
+    padding: 12px;
+    cursor: text;
+    outline: none;
+    transition: border-color .4s;
+    &:focus {
+        border-color: var(--accent-color);
+    }
+}
+
+button {
+    --wails-draggable: no-drag;
+    padding: 12px;
+    font-size: 22px;
+    width: 182px;
+    font-family: inherit;
+    font-size: inherit;
+    border-radius: 6px;
+    border: none;
+    background: var(--fg-color);
+    color: var(--bg-color);
+    transition: background-color .4s, border-color .2s, color .2s;
+    cursor: pointer;
+    &:hover {
+        background: rgba(var(--fg-rgb), .7);
+    }
+    &.secondary {
+        background: none;
+        border: 1px solid rgba(var(--fg-rgb), .7);
+        color: rgba(var(--fg-rgb), .7);
+        &:hover {
+            color: var(--fg-color);
+            border-color: var(--fg-color);
+            background: rgba(var(--fg-rgb), .1);
+        }
+    }
+}
+
+* {
+    box-sizing: border-box;
+    cursor: default;
+}
