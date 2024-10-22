@@ -1,38 +1,72 @@
 <script lang="ts" setup>
-import {computed, onBeforeMount, ref} from 'vue'
+import {computed, onBeforeMount, ref, watchEffect} from 'vue'
 import {GetConfigMinutes, StartSession} from '@w/go/main/App'
-import { main } from '@w/go/models'
 import ViewLayout from '@/components/ViewLayout.vue'
+import { useSession } from '@/composables/useSession'
 
-const config = ref<main.Config>()
+const { session } = useSession()
 
 onBeforeMount(async () => {
-  config.value = await GetConfigMinutes()
-  console.log('got config:', config.value)
+  const configMinutes = await GetConfigMinutes()
+  session.value.config.workMin = configMinutes.intervals.Working
+  session.value.config.restMin = configMinutes.intervals.Resting
+  console.log('got config (min):', configMinutes)
 })
 
 function start() {
   console.log('start()')
-  if (!config.value) return
-  const { Working, Resting } = config.value.intervals
-  StartSession(Working, Resting)
+  const { workMin, restMin } = session.value.config
+  StartSession(workMin, restMin)
 }
+
+const validate = (value: number) => {
+  return Number.isInteger(value) && value > 0
+}
+
+const isValidWork = computed(() => validate(session.value.config.workMin))
+const isValidRest = computed(() => validate(session.value.config.restMin))
+const isValidAll = computed(() => isValidWork.value && isValidRest.value)
+
+watchEffect(() => {
+  console.log('isValidWork', isValidWork.value, 'session.value.config.workMin', session.value.config.workMin)
+})
 
 </script>
 
 <template>
-  <ViewLayout v-if="config">
-    <template #heading>Setup a new session</template>
+  <ViewLayout>
+    <template #heading>Start a new session</template>
     <div class="block">
       <span class="label"><span class="highlight">Work</span> interval (min):</span>
-      <input class="input" type="number" v-model="config.intervals.Working">
+      <input
+        class="input"
+        type="number"
+        v-model="session.config.workMin"
+        :class="{ 'not-valid': !isValidWork }"
+      >
     </div>
     <div class="block">
       <span class="label"><span class="highlight">Rest</span> interval (min):</span>
-      <input class="input" type="number" v-model="config.intervals.Resting">
+      <input
+        class="input"
+        type="number"
+        v-model="session.config.restMin"
+        :class="{ 'not-valid': !isValidRest }"
+      >
     </div>
-    <template #after>
-      <button class="start-button" @click="start">Start</button>
+    <template #actions>
+      <button
+        class="start-button"
+        :class="{ 'inactive': !isValidAll }"
+        @click="start"
+      >
+        Start
+      </button>
+    </template>
+    <template #afterActions>
+      <span class="hint" :class="{ visible: !isValidAll }">
+        Please use positive number values
+      </span>
     </template>
   </ViewLayout>
 </template>
@@ -51,5 +85,20 @@ function start() {
 .input {
   width: 92px;
   font-size: 18px;
+  &.not-valid {
+    border-color: indianred;
+  }
+}
+.start-button {
+  margin-top: 12px;
+}
+.hint {
+  opacity: 0;
+  transition: opacity .4s;
+  color: indianred;
+  height: 0;
+  &.visible {
+    opacity: 1;
+  }
 }
 </style>

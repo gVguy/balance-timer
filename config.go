@@ -41,6 +41,7 @@ func NewConfig() *Config {
 		Intervals: IntervalsMap{
 			Working: 30 * time.Minute,
 			Resting: 10 * time.Minute,
+			WorkEnd: 20 * time.Second,
 		},
 	}
 }

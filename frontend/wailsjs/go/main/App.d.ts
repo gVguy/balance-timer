@@ -8,6 +8,12 @@ export function BeginWork():Promise<void>;
 
 export function GetConfigMinutes():Promise<main.Config>;
 
+export function MoreWork(arg1:number):Promise<void>;
+
+export function SkipRest():Promise<void>;
+
+export function SkipWork():Promise<void>;
+
 export function StartSession(arg1:number,arg2:number):Promise<void>;
 
 export function Stop():Promise<void>;

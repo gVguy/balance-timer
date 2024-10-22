@@ -1,79 +1,18 @@
 <script setup lang="ts">
 import { Stop } from '@w/go/main/App'
-import { ref, watchEffect } from 'vue'
-
-const isDown = ref(false)
-
-
-const onDown = () => {
-  isDown.value = true
-  addEventListener('pointerup', () => {
-    isDown.value = false
-  }, { once: true })
-}
-
-let timeout: any = 0
-
-watchEffect(() => {
-  if (isDown.value) {
-    timeout = setTimeout(() => {
-      Stop()
-    }, 1500)
-  } else {
-    clearTimeout(timeout)
-  }
-})
-
+import TooltipHint from './TooltipHint.vue'
+import RoundPressAndHoldButton from './RoundPressAndHoldButton.vue'
 </script>
 
 <template>
-  <div class="stop-button-container">
-    <button
-      class="secondary stop-button"
-      :class="{ down: isDown }"
-      @pointerdown="onDown"
-    >
-      End session
-    </button>
-    <span class="hint">
-      Press and hold to quit
-    </span>
-  </div>
+  <TooltipHint
+    title="End session"
+    text="Press and hold to return to the New Session screen"
+  >
+    <RoundPressAndHoldButton @confirm="Stop">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+      </svg>
+    </RoundPressAndHoldButton>
+  </TooltipHint>
 </template>
-
-<style scoped lang="scss">
-.stop-button-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  .stop-button {
-    position: relative;
-    &.down {
-      &::after {
-        position: absolute;
-        display: block;
-        content: '';
-        inset: 0;
-        background: rgba(var(--fg-rgb), .4);
-        transform-origin: left center;
-        animation: hold-down 1.6s cubic-bezier(.3,.6,.7,.4);
-        @keyframes hold-down {
-          from {
-            transform: scaleX(0);
-          }
-        }
-      }
-    }
-    &:hover ~ .hint {
-      opacity: 1;
-    }
-  }
-  .hint {
-    transition: opacity .4s;
-    opacity: 0;
-    color: rgba(var(--fg-rgb), .3);
-  }
-}
-</style>

@@ -66,6 +66,7 @@ const strokeDasharrayComplete = computed(() => {
   .value-display {
     position: absolute;
     font-size: 28px;
+    color: var(--fg-color);
   }
 }
 </style>

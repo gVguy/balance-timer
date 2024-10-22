@@ -6,6 +6,10 @@ const session = ref({
   timeRemaining: 0,
   timeRemainingString: '',
   state: 'Stopped',
+  config: {
+    workMin: 1,
+    restMin: 1,
+  }
 })
 
 EventsOn('time', (timeInt: number, timeString: string) => {

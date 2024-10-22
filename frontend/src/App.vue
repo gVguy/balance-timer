@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import StoppedView from '@/components/views/StoppedView.vue'
 import WorkingView from '@/components/views/WorkingView.vue'
+import WorkEndView from '@/components/views/WorkEndView.vue'
+import RestingView from '@/components/views/RestingView.vue'
+import RestEndView from '@/components/views/RestEndView.vue'
 import { useSession } from '@/composables/useSession'
 import * as API from '@w/go/main/App'
 
@@ -14,26 +17,8 @@ const { session } = useSession()
   <Transition name="view">
     <StoppedView v-if="session.state == 'Stopped'" />
     <WorkingView v-else-if="session.state == 'Working'" />
+    <WorkEndView v-else-if="session.state == 'WorkEnd'" />
+    <RestingView v-else-if="session.state == 'Resting'" />
+    <RestEndView v-else-if="session.state == 'RestEnd'" />
   </Transition>
 </template>
-
-<style scoped lang="scss">
-.view-enter-from,
-.view-leave-to {
-  opacity: 0;
-}
-.view-leave-to {
-  translate: 0 -50px;
-}
-.view-enter-from {
-  translate: 0 50px;
-}
-.view-enter-active,
-.view-leave-active {
-  position: absolute;
-  transition: all 1s, opacity .6s;
-}
-.view-enter-active {
-  transition-delay: .3s;
-}
-</style>

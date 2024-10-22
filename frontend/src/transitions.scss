@@ -1,0 +1,28 @@
+.view-enter-from,
+.view-leave-to {
+  opacity: 0;
+}
+.view-leave-to {
+  translate: 0 -50px;
+}
+.view-enter-from {
+  translate: 0 50px;
+}
+.view-enter-active,
+.view-leave-active {
+  position: absolute;
+  transition: all 1s, opacity .6s;
+}
+.view-enter-active {
+  transition-delay: .3s;
+}
+
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .4s;
+}

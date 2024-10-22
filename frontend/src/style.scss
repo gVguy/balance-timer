@@ -1,3 +1,5 @@
+@import './transitions.scss';
+
 :root {
     --bg-rgb: 13, 13, 13;
     --fg-rgb: 255, 255, 255;
@@ -27,6 +29,7 @@ body {
     flex-direction: column;
     --wails-draggable: drag;
     user-select: none;
+    text-align: center;
 }
 
 input {
@@ -57,10 +60,17 @@ button {
     border: none;
     background: var(--fg-color);
     color: var(--bg-color);
-    transition: background-color .4s, border-color .2s, color .2s;
+    transition: all .4s;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     &:hover {
         background: rgba(var(--fg-rgb), .7);
+    }
+    &.inactive {
+        opacity: .7;
+        pointer-events: none;
     }
     &.secondary {
         background: none;
@@ -72,6 +82,10 @@ button {
             background: rgba(var(--fg-rgb), .1);
         }
     }
+}
+
+span.highlight {
+    color: var(--accent-color);
 }
 
 * {

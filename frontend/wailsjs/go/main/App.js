@@ -14,6 +14,18 @@ export function GetConfigMinutes() {
   return window['go']['main']['App']['GetConfigMinutes']();
 }
 
+export function MoreWork(arg1) {
+  return window['go']['main']['App']['MoreWork'](arg1);
+}
+
+export function SkipRest() {
+  return window['go']['main']['App']['SkipRest']();
+}
+
+export function SkipWork() {
+  return window['go']['main']['App']['SkipWork']();
+}
+
 export function StartSession(arg1, arg2) {
   return window['go']['main']['App']['StartSession'](arg1, arg2);
 }

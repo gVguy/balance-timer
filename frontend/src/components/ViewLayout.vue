@@ -6,10 +6,11 @@
     <span class="heading">
       <slot name="heading" />
     </span>
-    <div class="spacer" />
     <slot />
-    <div class="spacer" />
-    <slot name="after" />
+    <div class="actions">
+      <slot name="actions" />
+    </div>
+    <slot name="afterActions" />
   </div>
 </template>
 
@@ -19,13 +20,19 @@
   flex-direction: column;
   align-items: center;
   gap: 22px;
+  padding: 22px;
+  color: rgba(var(--fg-rgb), .7);
+  text-wrap: pretty;
   .heading {
     font-size: 32px;
+    margin-bottom: 22px;
+    color: var(--fg-color);
   }
-  .spacer {
-  }
-  .after {
-    margin-top: 32px;
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
   }
 }
 </style>
