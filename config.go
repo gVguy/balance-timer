@@ -47,7 +47,7 @@ func NewConfig() *Config {
 }
 
 // Load reads the configuration from the JSON file
-func (c *Config) load() *Config {
+func (c *Config) Load() *Config {
 
 	// Read the file content
 	byteValue, err := os.ReadFile(configPath)
@@ -65,7 +65,7 @@ func (c *Config) load() *Config {
 }
 
 // Write writes the configuration to the JSON file
-func (c *Config) write() error {
+func (c *Config) Write() error {
 	// Ensure the directory exists
 	dir := filepath.Dir(configPath)
 	if err := os.MkdirAll(dir, os.ModePerm); err != nil {

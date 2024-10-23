@@ -16,7 +16,7 @@ func (a *App) StartSession(workDuration int, restDuration int) {
 
 	a.config.Intervals[Working] = time.Duration(workDuration) * time.Minute
 	a.config.Intervals[Resting] = time.Duration(restDuration) * time.Minute
-	err := a.config.write()
+	err := a.config.Write()
 	if err != nil {
 		fmt.Printf("Error in config.write(): %v", err)
 	}
@@ -90,7 +90,25 @@ func (a *App) SkipRest() {
 	a.BeginWork()
 }
 
-// Returns config with intervals formatted to minutes
+// Skip handles the skip logic based on current period and calls the corresponding action
+func (a *App) Skip() {
+	fmt.Println("Skip()")
+	if a.session.stateIs(Stopped) {
+		return
+	}
+	switch a.session.state {
+	case Working:
+		a.SkipWork()
+	case Resting:
+		a.SkipRest()
+	case WorkEnd: // in work end, skip rest
+		a.BeginWork()
+	case RestEnd: // in rest end, skip work
+		a.BeginRest()
+	}
+}
+
+// GetConfigMinutes returns config with intervals formatted to minutes
 func (a *App) GetConfigMinutes() Config {
 	return Config{
 		Intervals: IntervalsMap{
@@ -100,20 +118,32 @@ func (a *App) GetConfigMinutes() Config {
 	}
 }
 
-// helper function to check whether the current state of the session matches the required
+// stateIs checks whether the current state of the session matches the required
 func (s *Session) stateIs(allowedStates ...SessionState) bool {
 	for _, state := range allowedStates {
 		if s.state == state {
 			return true
 		}
 	}
-	fmt.Printf("stateIs() Expected state(s): %v. Current: '%v')\n", allowedStates, s.state)
+	// fmt.Printf("stateIs() Expected state(s): %v. Current: '%v')\n", allowedStates, s.state)
 	return false
 }
 
-// // helper function to round float minutes to time duration of int number of seconds
-// func roundToSec(min float32) time.Duration {
-// 	minutes := min * float32(time.Minute)
-// 	roundedSeconds := int(minutes / float32(time.Second))
-// 	return time.Duration(roundedSeconds * int(time.Second))
-// }
+// confirmAction prompts user for confirmation with a dialog
+func (a *App) confirmAction(title string, message string) bool {
+	response, err := runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+		Type:          runtime.QuestionDialog,
+		Title:         title,
+		Message:       message,
+		DefaultButton: "Yes",
+		CancelButton:  "Cancel",
+		Buttons:       []string{"Yes", "Cancel"},
+	})
+	if err != nil {
+		fmt.Printf("confirmAction() Error in MessageDialog, treat as confirmed. Error: %v\n", err)
+		return true
+	}
+	fmt.Printf("confirmAction() MessageDialog response: %v\n", response)
+	confirmedStop := response == "Yes"
+	return confirmedStop
+}

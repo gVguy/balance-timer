@@ -18,6 +18,10 @@ export function MoreWork(arg1) {
   return window['go']['main']['App']['MoreWork'](arg1);
 }
 
+export function Skip() {
+  return window['go']['main']['App']['Skip']();
+}
+
 export function SkipRest() {
   return window['go']['main']['App']['SkipRest']();
 }

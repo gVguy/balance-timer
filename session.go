@@ -36,6 +36,7 @@ func (s *Session) setState(state SessionState) {
 	fmt.Printf("setState() '%s'\n", state)
 	s.state = state
 	s.app.emitState(state)
+	s.app.menu.SetMenu()
 }
 
 func (s *Session) runSessionPeriod() {
@@ -65,14 +66,16 @@ func (s *Session) handleTimeEnd() {
 	fmt.Printf("handleTimeEnd() Current state: %v\n", s.state)
 	switch s.state {
 	case Working: // finished working
-		runtime.WindowFullscreen(s.app.ctx)
 		s.setState(WorkEnd)
+		runtime.WindowFullscreen(s.app.ctx)
+		PlaySound()
 		// run new ticker for auto-start rest
 		s.timeRemaining = s.app.config.Intervals[WorkEnd]
 		s.runSessionPeriod()
 	case Resting: // finished resting
-		runtime.WindowFullscreen(s.app.ctx)
 		s.setState(RestEnd)
+		runtime.WindowFullscreen(s.app.ctx)
+		PlaySound()
 	case WorkEnd: // auto-continue ticker finished
 		s.app.BeginRest()
 	}

@@ -16,6 +16,9 @@ func main() {
 	// Create an instance of the app structure
 	app := NewApp()
 
+	// Init sound speaker
+	InitSound()
+
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:     "Balance Timer",

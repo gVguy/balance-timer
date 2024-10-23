@@ -10,6 +10,8 @@ export function GetConfigMinutes():Promise<main.Config>;
 
 export function MoreWork(arg1:number):Promise<void>;
 
+export function Skip():Promise<void>;
+
 export function SkipRest():Promise<void>;
 
 export function SkipWork():Promise<void>;

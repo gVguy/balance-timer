@@ -4,7 +4,7 @@ import StopButton from '@/components/StopButton.vue'
 import ContinueButton from '@/components/ContinueButton.vue'
 import { useSession } from '@/composables/useSession'
 import { computed } from 'vue'
-import { BeginWork, BeginRest } from '@w/go/main/App'
+import { BeginWork, Skip } from '@w/go/main/App'
 import SkipButton from '@/components/SkipButton.vue'
 
 const { session } = useSession()
@@ -32,7 +32,7 @@ const restTime = computed(() => {
       <SkipButton
         title="Skip productivity"
         text="Press and hold to move on to the next Rest period without going into a Productivity period"
-        @confirm="BeginRest"
+        @confirm="Skip"
       />
       <StopButton />
     </template>

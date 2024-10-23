@@ -2,7 +2,7 @@
 import CircleProgress from '@/components/CircleProgress.vue'
 import ViewLayout from '@/components/ViewLayout.vue'
 import StopButton from '@/components/StopButton.vue'
-import { SkipWork } from '@w/go/main/App'
+import { Skip } from '@w/go/main/App'
 import SkipButton from '@/components/SkipButton.vue'
 
 </script>
@@ -18,7 +18,7 @@ import SkipButton from '@/components/SkipButton.vue'
       <SkipButton
         title="Skip to rest"
         text="Press and hold to skip this Productivity period and begin the next Rest period"
-        @confirm="SkipWork"
+        @confirm="Skip"
       />
       <StopButton />
     </template>
