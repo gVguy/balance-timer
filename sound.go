@@ -3,7 +3,6 @@ package main
 import (
 	"embed"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/gopxl/beep"
@@ -12,7 +11,7 @@ import (
 )
 
 //go:embed sound/time_end.mp3
-var _ embed.FS
+var soundFS embed.FS
 
 // InitSound decodes the sound file and inits the speaker with required sample rate
 func InitSound() {
@@ -40,7 +39,7 @@ func PlaySound() {
 // loadSoundFile loads file from fs, decodes it and returns its streamer and format
 func loadSoundFile() (beep.StreamSeekCloser, *beep.Format) {
 	fmt.Println("loadSoundFile()")
-	f, err := os.Open("sound/time_end.mp3")
+	f, err := soundFS.Open("sound/time_end.mp3")
 	if err != nil {
 		fmt.Printf("loadSoundFile() Error while opening the file: %v", err)
 		return nil, nil
