@@ -68,14 +68,14 @@ func (s *Session) handleTimeEnd() {
 	case Working: // finished working
 		s.setState(WorkEnd)
 		runtime.WindowFullscreen(s.app.ctx)
-		PlaySound()
+		go PlaySound()
 		// run new ticker for auto-start rest
 		s.timeRemaining = s.app.config.Intervals[WorkEnd]
 		s.runSessionPeriod()
 	case Resting: // finished resting
 		s.setState(RestEnd)
 		runtime.WindowFullscreen(s.app.ctx)
-		PlaySound()
+		go PlaySound()
 	case WorkEnd: // auto-continue ticker finished
 		s.app.BeginRest()
 	}
