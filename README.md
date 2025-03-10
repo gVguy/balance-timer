@@ -6,7 +6,7 @@ This is a desktop Timer app that can help the user manage Productivity & Rest pe
 
 Use it to find time for taking breaks. Which in turn will help:  
 🧘 connect with reality and stay mindful throughout the day,  
-💤 battle the fatigue,  
+💤 battle fatigue,  
 🧠 focus better and get more stuff done,  
 🌱 stand up more often -> health benefits,  
 🙂 improve the mood.  
