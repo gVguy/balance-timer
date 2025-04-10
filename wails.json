@@ -9,5 +9,9 @@
   "author": {
     "name": "Ivan Che",
     "email": "ivan.chepurin@gmail.com"
+  },
+  "info": {
+    "copyright": "© Ivan Che",
+    "comments": "Timer to balance Productivity and Rest"
   }
 }

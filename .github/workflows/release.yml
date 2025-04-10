@@ -1,0 +1,45 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    env:
+      VERSION: ${{ github.ref_name }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+
+      - name: Install Wails CLI
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Cross-platform Build
+        run: |
+          wails build -clean -platform darwin/arm64,windows/amd64
+
+      - name: Zip executables using relative paths
+        run: |
+          cd build/bin
+          zip -r BalanceTimer-windows-amd64.zip "Balance Timer-amd64.exe"
+          zip -r BalanceTimer-macOS.zip "Balance Timer.app"
+
+      - name: 🚀 Create GitHub Release & Upload Zips
+        run: |
+          gh release create "$VERSION" \
+            ./build/bin/BalanceTimer-windows-amd64.zip \
+            ./build/bin/BalanceTimer-macOS.zip \
+            --title "$VERSION" \
+            --notes "Release created automatically from tag $VERSION"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
