@@ -1,45 +1,113 @@
-name: Release Build
+name: Cross-platform release
+
+permissions:
+  contents: write
 
 on:
   push:
     tags:
       - 'v*'
 
-jobs:
-  build-and-release:
-    runs-on: ubuntu-latest
+env:
+  # Necessary for most environments as build failure can occur due to OOM issues
+  NODE_OPTIONS: "--max-old-space-size=4096"
 
-    env:
-      VERSION: ${{ github.ref_name }}
+jobs:
+  build:
+    strategy:
+      fail-fast: true
+      matrix:
+        build:
+          - platform: linux/amd64
+            runner: ubuntu-latest
+            id: linux
+            ext: ''
+            flags: ' -tags webkit2_41'
+
+          - platform: darwin/arm64
+            runner: macos-latest
+            id: macos
+            ext: '.app'
+
+          - platform: windows/amd64
+            runner: windows-latest
+            id: windows
+            ext: '.exe'
+
+    runs-on: ${{ matrix.build.runner }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Go
-        uses: actions/setup-go@v4
+      - name: Setup go
+        uses: actions/setup-go@v2
         with:
           go-version: '1.23'
+          
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-      - name: Install Wails CLI
-        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
-
-      - name: Cross-platform Build
+      - name: Install wails
         run: |
-          wails build -clean -platform darwin/arm64,windows/amd64
+          go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
-      - name: Zip executables using relative paths
+      - name: Install deps (linux)
+        if: matrix.build.id == 'linux'
         run: |
-          cd build/bin
-          zip -r BalanceTimer-windows-amd64.zip "Balance Timer-amd64.exe"
-          zip -r BalanceTimer-macOS.zip "Balance Timer.app"
+          sudo apt-get update
+          sudo apt-get install -yq libgtk-3-0 libwebkit2gtk-4.1-dev gcc-aarch64-linux-gnu libasound2-dev
 
-      - name: 🚀 Create GitHub Release & Upload Zips
+      - name: Build
         run: |
-          gh release create "$VERSION" \
-            ./build/bin/BalanceTimer-windows-amd64.zip \
-            ./build/bin/BalanceTimer-macOS.zip \
-            --title "$VERSION" \
-            --notes "Release created automatically from tag $VERSION"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          wails build -platform ${{ matrix.build.platform }}${{ matrix.build.flags || '' }}
+
+      - name: Zip (windows)
+        if: matrix.build.id == 'windows'
+        working-directory: ./build/bin
+        run: |
+          Compress-Archive -Path "Balance Timer${{ matrix.build.ext }}" -DestinationPath "BalanceTimer-${{ matrix.build.id }}.zip"
+
+      - name: Zip
+        if: matrix.build.id != 'windows'
+        working-directory: ./build/bin
+        run: |
+          zip -r "BalanceTimer-${{ matrix.build.id }}.zip" "Balance Timer${{ matrix.build.ext }}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.build.id }}-build
+          path: './build/bin/BalanceTimer-${{ matrix.build.id }}.zip'
+
+  # Release job
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-build
+
+      - name: Download macos artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-build
+
+      - name: Download linux artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: linux-build
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            BalanceTimer-windows.zip
+            BalanceTimer-macos.zip
+            BalanceTimer-linux.zip
+          generate_release_notes: true
+          
