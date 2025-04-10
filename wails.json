@@ -11,6 +11,7 @@
     "email": "ivan.chepurin@gmail.com"
   },
   "info": {
+    "productVersion": "1.0.0",
     "copyright": "© Ivan Che",
     "comments": "Timer to balance Productivity and Rest"
   }
