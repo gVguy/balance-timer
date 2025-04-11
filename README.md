@@ -11,10 +11,6 @@ Use it to find time for taking breaks. Which in turn will help:
 🌱 stand up more often → health benefits,  
 🙂 improve the mood.  
 
-## Technologies used
-
-It is written in Go + Wails on the backend and Vue + TS on the frontend.
-
 ## Installation
 
 The executable can be acquired in two ways:
@@ -29,12 +25,18 @@ The app is released cross-platform. You can download a build for your os from th
 
 ### Option 2. Build locally
 
+If you don't see a build that matches your system above or you prefer not to run an unsigned app downloaded from the internet, you can build your own executable from source code.
+
+#### Perquisites
+
 Following tools are required to be installed on your system:
 - go 1.21+
 - npm (node 15+)
 - wails cli
 
 You can follow the official Wails [installation guide](https://wails.io/docs/gettingstarted/installation) for detailed instructions and platform-specific dependencies.
+
+#### Build steps:
 
 1. Clone this repository and `cd` into the project folder
 2. *(optional)* Run `wails doctor` to check for missing dependencies
@@ -43,25 +45,53 @@ You can follow the official Wails [installation guide](https://wails.io/docs/get
 
 ## Troubleshooting
 
-### “Balance Timer” is damaged and can’t be opened.
+### App is damaged / unrecognized app
 
-If you're on a macOS and have downloaded the app, you're likely to see the message saying it's damaged. **It's not**. It's just apple trying to make me pay a hundred bucks for signing my free open-source app.
+Some systems might block the app on the first launch after downloading. This happens because the app is not signed with a verified certificate.
 
-<details>
-  <summary>More info</summary>
-  Apple's policy is that every application must be signed with a Developer ID, which at the time of writing costs $99/year. Balance Timer is not sponsored and distributed open-source, so I don't expect to earn anything from it. Therefore it is not signed with such ID.
+#### macOS
 
-  When an unsigned app is downloaded from the internet, macOS marks it as "damaged" to prevent unidentified software from executing.
-</details>
+You may encounter this error:
 
-To **workaround** this warning follow these steps:
-1. Launch the terminal
-2. `cd` into the folder containing the executable
-3. Run `xattr -cr "Balance Timer.app/"` (assuming you didn't rename the app)
+> **"Balance Timer" is damaged and can’t be opened. You should move it to the Trash.**
+
+It's not really damaged, it's just how macOS treats unsigned apps downloaded from the internet.
+
+**Workaround**:
+1. Launch the Terminal
+2. `cd` into the folder containing the app
+3. Run `xattr -cr "Balance Timer.app/"` (assuming you didn't rename the file)
 4. Open the app normally from Finder, this time it should launch without warnings.
 
-You'll only need to do this the first time you run the app.
+You only need to do this once.
 
-> The release files are automatically built in a github workflow from the source code in this repository.
->
-> Still, if you don't trust in the executable's integrity and don't want to run it, you have an option of building your own executable from source (described above).
+#### Windows
+
+Windows may show a warning like:
+
+> **Windows protected your PC. SmartScreen prevented an unrecognized app from starting.**
+
+If you see this warning, click **"Run anyway"**.
+
+If you don't see "Run anyway" button, click on **"More info"** first.
+
+#### Security concerns
+
+Since this app is free, open-source and not sponsored, it's distributed unsigned.
+
+However, the app is safe if you downloaded it with a link above or from this repository's [releases page](https://github.com/gVguy/balance-timer/releases/).
+
+Release build files are automatically generated from the source code in this repo with github-actions. Both the fact that release is created by github-actions and the linked commit are visible for each release.
+
+You are welcome to inspect the source code as well as the action responsible for the release (found in `.github/workflows/`).
+
+Still, if you don't trust in the executable's integrity and don't want to run it, you have an option of building your own executable from source (described above).
+
+## Technologies used
+
+- Wails
+- Go
+- Vue.js
+- TypeScript
+- Sass
+- Github actions
