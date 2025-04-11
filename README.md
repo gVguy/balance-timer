@@ -2,13 +2,13 @@
 
 ## About
 
-This is a desktop Timer app that can help the user manage Productivity & Rest periods during work sessions.
+A desktop Timer app that can help the user manage Productivity & Rest periods during work sessions.
 
 Use it to find time for taking breaks. Which in turn will help:  
 🧘 connect with reality and stay mindful throughout the day,  
 💤 battle fatigue,  
 🧠 focus better and get more stuff done,  
-🌱 stand up more often -> health benefits,  
+🌱 stand up more often → health benefits,  
 🙂 improve the mood.  
 
 ## Technologies used
@@ -21,9 +21,11 @@ The executable can be acquired in two ways:
 
 ### Option 1. Download
 
-[📦 Latest release](https://github.com/gVguy/balance-timer/releases/)
-
 The app is released cross-platform. You can download a build for your os from the latest release assets.
+
+📦 [MacOS build (arm64)](https://github.com/gVguy/balance-timer/releases/latest/download/BalanceTimer-macos.zip)  
+📦 [Windows build (amd64)](https://github.com/gVguy/balance-timer/releases/latest/download/BalanceTimer-windows.zip)  
+📦 [Linux build (amd64)](https://github.com/gVguy/balance-timer/releases/latest/download/BalanceTimer-linux.zip)
 
 ### Option 2. Build locally
 
@@ -43,8 +45,7 @@ You can follow the official Wails [installation guide](https://wails.io/docs/get
 
 ### “Balance Timer” is damaged and can’t be opened.
 
-If you're on a macOS and have downloaded the app, you're likely to see the message saying it's damaged. It's not. It's just apple trying to make me pay a hundred bucks for signing my free open-source app.
-
+If you're on a macOS and have downloaded the app, you're likely to see the message saying it's damaged. **It's not**. It's just apple trying to make me pay a hundred bucks for signing my free open-source app.
 
 <details>
   <summary>More info</summary>
@@ -56,7 +57,10 @@ If you're on a macOS and have downloaded the app, you're likely to see the messa
 To **workaround** this warning follow these steps:
 1. Launch the terminal
 2. `cd` into the folder containing the executable
-3. Run `xattr -cr "Balance Timer.app/"` (assuming you didn't rename the app).
+3. Run `xattr -cr "Balance Timer.app/"` (assuming you didn't rename the app)
+4. Open the app normally from Finder, this time it should launch without warnings.
+
+You'll only need to do this the first time you run the app.
 
 > The release files are automatically built in a github workflow from the source code in this repository.
 >
