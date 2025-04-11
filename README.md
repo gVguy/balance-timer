@@ -1,15 +1,19 @@
 # Balance Timer
 
+![App UI preview: productivity session in progress](https://i.imgur.com/Sm5yBxF.jpeg)
+
 ## About
 
-A desktop Timer app that can help the user manage Productivity & Rest periods during work sessions.
+**Balance Timer** is a simple desktop app that helps you manage Productivity and Rest periods throughout the day.
 
-Use it to find time for taking breaks. Which in turn will help:  
-🧘 connect with reality and stay mindful throughout the day,  
+When a productivity session ends, the app opens in fullscreen to remind you to take a proper break. Once the rest period is over, it invites you to get back to work.
+
+Taking regular breaks can help you:  
+🧘 stay mindful and connected with the present moment,  
 💤 battle fatigue,  
-🧠 focus better and get more stuff done,  
-🌱 stand up more often → health benefits,  
-🙂 improve the mood.  
+🧠 improve focus and productivity,  
+🌱 move around more → health benefits,  
+🙂 improve your mood.  
 
 ## Installation
 
